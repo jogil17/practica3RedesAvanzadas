@@ -1,0 +1,5 @@
+Flask==2.3.2
+psycopg2-binary==2.9.6
+redis==4.5.5
+pytest
+prometheus_flask_exporter

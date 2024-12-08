@@ -1,0 +1,14 @@
+*.exe
+secret.yaml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+apuntes.txt
+
+.pytest_cache/
+
+secrets.yaml
