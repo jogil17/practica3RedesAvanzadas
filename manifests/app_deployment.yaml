@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: my_app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: database_url
+        - name: CACHE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: cache_url
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000

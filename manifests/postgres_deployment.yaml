@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:latest
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_NAME
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data  # Ruta donde se almacenan los datos
+          name: postgres-data  # Nombre del volumen a montar
+      volumes:
+      - name: postgres-data  # Define el volumen que será montado
+        persistentVolumeClaim:
+          claimName: postgres-pvc  # PVC que solicita un volumen persistente
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc  # Nombre del PVC
+spec:
+  accessModes:
+    - ReadWriteOnce  # Acceso en modo lectura y escritura
+  resources:
+    requests:
+      storage: 5Gi  # Tamaño del volumen persistente solicitado
