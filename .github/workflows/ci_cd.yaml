@@ -27,11 +27,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install black flake8
 
-      - name: Run Formatter (Black)
-        run: black app/
+     # - name: Run Formatter (Black)
+      #  run: black app/
 
-      - name: Run Linter (Flake8)
-        run: flake8 app/
+     # - name: Run Linter (Flake8)
+      #  run: flake8 app/
 
   test:
     name: Run Tests

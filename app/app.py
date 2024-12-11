@@ -57,7 +57,7 @@ def index():
     return jsonify({
         "Database": db_status,
         "Cache": cache_status,
-        "Instance": instance_name  # Añadir el nombre de la instancia
+        "Instance": instance_name 
     })
 
 # Nuevo endpoint de health-check
