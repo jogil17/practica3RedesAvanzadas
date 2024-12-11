@@ -1,11 +1,11 @@
 import os
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify
 import psycopg2
 import redis
 from prometheus_flask_exporter import PrometheusMetrics
 import socket
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="/app/static")
 
 # Configurar Prometheus
 metrics = PrometheusMetrics(app)
@@ -66,11 +66,6 @@ def health_check():
     return jsonify({
         "status": "healthy"
     })
-
-# Ruta para servir imágenes estáticas desde la carpeta /app/static
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    return send_from_directory('/app/static', filename)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
