@@ -6,7 +6,9 @@ WORKDIR /app
 
 # Copiar los archivos de requerimientos y la aplicación
 COPY requirements.txt requirements.txt
-COPY app.py app.py
+#COPY app.py app.py
+COPY app/app.py app.py
+
 #COPY ./static /app/static
 COPY app/static /app/static
 
