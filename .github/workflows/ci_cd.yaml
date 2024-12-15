@@ -31,7 +31,7 @@ jobs:
         run: black app/tests/test_app.py app/tests/unittest_app.py app/app.py
 
       - name: Run Linter (Flake8)
-        run: flake8 app/tests/test_app.py
+        run: flake8 app/tests/test_app.py app/tests/unittest_app.py app/app.py --ignore=E501,E402 .
 
   test:
     name: Run Tests
