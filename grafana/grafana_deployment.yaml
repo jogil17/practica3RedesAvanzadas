@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  replicas: 1  # Puedes cambiar el número de réplicas según tus necesidades
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:latest  # Usa la última versión estable de Grafana
+          ports:
+            - containerPort: 3000  # Puerto de Grafana
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: "admin"  # Cambia esta contraseña a algo más seguro
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana  # Ruta dentro del contenedor donde Grafana guarda los datos
+      volumes:
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-pvc  # PVC creado previamente
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi  # Debe coincidir con el tamaño del PV

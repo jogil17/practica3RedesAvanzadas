@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  selector:
+    app: grafana
+  ports:
+    - protocol: TCP
+      port: 80   # El puerto por el cual accederás desde fuera del clúster (si usas LoadBalancer o NodePort)
+      targetPort: 3000  # El puerto interno del pod donde Grafana está escuchando
+  type: NodePort  # Cambia esto a LoadBalancer si usas un proveedor de nube o si prefieres exponerlo con un IP externa
