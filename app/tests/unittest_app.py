@@ -1,7 +1,11 @@
 import unittest
 from unittest.mock import patch
 from app import app, get_db_connection, get_cache_connection
+import sys
+import os
 
+base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, base_path)
 
 class TestApp(unittest.TestCase):
 
