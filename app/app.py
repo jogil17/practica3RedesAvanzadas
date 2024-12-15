@@ -15,8 +15,8 @@ metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'Application Information', version='1.0')
 
 # Métricas personalizadas
-db_up = metrics.gauge('database_up', 'Status of the database connection')
-cache_up = metrics.gauge('cache_up', 'Status of the cache connection')
+db_up = metrics.gauge('database_up', 'Status database connection')
+cache_up = metrics.gauge('cache_up', 'Status cache connection')
 
 
 def get_db_connection():
