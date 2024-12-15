@@ -41,6 +41,10 @@ Write-Host "Aplicando configuraciones de 'exporter/'..." -ForegroundColor Yellow
 kubectl apply -f exporter/
 Write-Host "✅ Configuraciones de 'exporter/' aplicadas." -ForegroundColor Green
 
+Write-Host "Aplicando configuraciones de 'grafana/'..." -ForegroundColor Yellow
+kubectl apply -f grafana/
+Write-Host "✅ Configuraciones de 'grafana/' aplicadas." -ForegroundColor Green
+
 Write-Host "Aplicando configuraciones de 'servicesMonitor/'..." -ForegroundColor Yellow
 kubectl apply -f servicesMonitor/
 Write-Host "✅ Configuraciones de 'servicesMonitor/' aplicadas." -ForegroundColor Green
