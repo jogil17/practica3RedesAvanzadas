@@ -62,7 +62,7 @@ def index():
     instance_name = socket.gethostname()
 
     return jsonify({
-        "Database": db_status,
+        "DB": db_status,
         "Cache": cache_status,
         "Instance": instance_name
     })
