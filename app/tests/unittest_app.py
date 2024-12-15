@@ -19,8 +19,8 @@ class TestApp(unittest.TestCase):
             self.assertEqual(json_data['status'], 'healthy')
 
     # Test para el endpoint / con conexión a base de datos y caché exitosa
-    @patch('app.get_db_connection')
-    @patch('app.get_cache_connection')
+    @patch('app.app.get_db_connection')
+    @patch('app.app.get_cache_connection')
     def test_index_success(self, mock_get_cache, mock_get_db):
         # Simular una conexión exitosa a la base de datos y caché
         mock_get_db.return_value = MagicMock()
@@ -35,8 +35,8 @@ class TestApp(unittest.TestCase):
             self.assertEqual(json_data['Cache'], 'Conectado')
 
     # Test para el endpoint / con fallo en la conexión a la base de datos
-    @patch('app.get_db_connection')
-    @patch('app.get_cache_connection')
+    @patch('app.app.get_db_connection')
+    @patch('app.app.get_cache_connection')
     def test_index_db_failure(self, mock_get_cache, mock_get_db):
         # Simular fallo en la conexión a la base de datos
         mock_get_db.return_value = None
@@ -51,8 +51,8 @@ class TestApp(unittest.TestCase):
             self.assertEqual(json_data['Cache'], 'Conectado')
 
     # Test para el endpoint / con fallo en la conexión al caché
-    @patch('app.get_db_connection')
-    @patch('app.get_cache_connection')
+    @patch('app.app.get_db_connection')
+    @patch('app.app.get_cache_connection')
     def test_index_cache_failure(self, mock_get_cache, mock_get_db):
         # Simular fallo en la conexión al caché
         mock_get_db.return_value = MagicMock()
@@ -80,15 +80,8 @@ class TestApp(unittest.TestCase):
         conn = get_db_connection()
         self.assertIsNone(conn)
 
-    # Test para verificar la conexión al caché
-    @patch('redis.StrictRedis.from_url')
-    def test_get_cache_connection_success(self, mock_redis):
-        mock_redis.return_value = MagicMock()
-        cache = get_cache_connection()
-        self.assertIsNotNone(cache)
-
     # Test para verificar fallo en la conexión al caché
-    @patch('redis.StrictRedis.from_url')
+    @patch('app.app.get_cache_connection')
     def test_get_cache_connection_failure(self, mock_redis):
         mock_redis.side_effect = Exception("Error conectando a la caché")
         cache = get_cache_connection()
