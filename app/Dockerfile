@@ -5,7 +5,8 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copiar los archivos de requerimientos y la aplicación
-COPY requirements.txt requirements.txt
+#COPY requirements.txt requirements.txt
+COPY app/requirements.txt requirements.txt
 #COPY app.py app.py
 COPY app/app.py app.py
 
