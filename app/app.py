@@ -1,6 +1,5 @@
 import os
 import socket
-
 from flask import Flask, jsonify
 import psycopg2
 import redis
@@ -18,7 +17,6 @@ metrics.info('app_info', 'Application Information', version='1.0')
 db_up = metrics.gauge('database_up', 'Status database connection')
 cache_up = metrics.gauge('cache_up', 'Status cache connection')
 
-
 def get_db_connection():
     db_url = os.getenv('DATABASE_URL')
     try:
@@ -27,7 +25,6 @@ def get_db_connection():
     except Exception as e:
         print(f"Error conectando a la base de datos: {e}")
         return None
-
 
 def get_cache_connection():
     cache_url = os.getenv('CACHE_URL')
@@ -41,7 +38,6 @@ def get_cache_connection():
             print(f"Error conectando a la caché: {e}")
             return None
     return None
-
 
 @app.route('/')
 def index():
@@ -64,14 +60,12 @@ def index():
         "Instance": instance_name
     })
 
-
 # Nuevo endpoint de health-check
 @app.route('/health')
 def health_check():
     return jsonify({
         "status": "healthy"
     })
-
 
 if __name__ == '__main__':
     app.run(
