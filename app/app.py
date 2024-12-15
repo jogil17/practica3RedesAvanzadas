@@ -5,6 +5,7 @@ import psycopg2
 import redis
 from prometheus_flask_exporter import PrometheusMetrics
 
+
 app = Flask(__name__, static_folder="/app/static")
 
 
