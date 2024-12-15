@@ -5,17 +5,22 @@ import psycopg2
 import redis
 from prometheus_flask_exporter import PrometheusMetrics
 
+
 app = Flask(__name__, static_folder="/app/static")
+
 
 # Configurar Prometheus
 metrics = PrometheusMetrics(app)
 
+
 # Agregar información sobre la aplicación como un ejemplo
 metrics.info('app_info', 'Application Information', version='1.0')
+
 
 # Métricas personalizadas
 db_up = metrics.gauge('database_up', 'Status database connection')
 cache_up = metrics.gauge('cache_up', 'Status cache connection')
+
 
 def get_db_connection():
     db_url = os.getenv('DATABASE_URL')
@@ -25,6 +30,7 @@ def get_db_connection():
     except Exception as e:
         print(f"Error conectando a la base de datos: {e}")
         return None
+
 
 def get_cache_connection():
     cache_url = os.getenv('CACHE_URL')
@@ -38,6 +44,7 @@ def get_cache_connection():
             print(f"Error conectando a la caché: {e}")
             return None
     return None
+
 
 @app.route('/')
 def index():
@@ -60,6 +67,7 @@ def index():
         "Instance": instance_name
     })
 
+
 # Nuevo endpoint de health-check
 @app.route('/health')
 def health_check():
@@ -67,8 +75,9 @@ def health_check():
         "status": "healthy"
     })
 
+
 if __name__ == '__main__':
     app.run(
-    host='0.0.0.0',
-    port=5000
-)
+        host='0.0.0.0',
+        port=5000
+    )
