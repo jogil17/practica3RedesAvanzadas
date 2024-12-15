@@ -53,7 +53,7 @@ jobs:
           pip install pytest
 
       - name: Run Tests
-        run: pytest tests/unittest_app.py --disable-warnings
+        run: pytest app/tests/unittest_app.py --disable-warnings
 
   build-and-push:
     name: Build and Push Docker Image
