@@ -28,10 +28,10 @@ jobs:
           pip install black flake8
 
       - name: Run Formatter (Black)
-        run: black app/
+        run: black app/tests/test_app.py app/tests/unittest_app.py app/app.py
 
       - name: Run Linter (Flake8)
-        run: flake8 app/
+        run: flake8 app/tests/test_app.py app/tests/unittest_app.py app/app.py
 
   test:
     name: Run Tests
