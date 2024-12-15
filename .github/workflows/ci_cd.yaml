@@ -72,7 +72,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t my_app:latest -f app .
+          docker build -t my_app:latest -f app/Dockerfile .
 
       - name: Tag Docker Image
         run: |
