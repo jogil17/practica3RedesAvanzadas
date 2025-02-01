@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Dashboard</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+        color: #333;
+    }
+    header {
+        background-color: #4caf50;
+        color: white;
+        padding: 1rem 2rem;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .container {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 20px;
+    }
+    .status {
+        grid-column: span 2;
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem 0;
+    }
+    .status div {
+        flex: 1;
+        margin: 0 1rem;
+        padding: 1rem;
+        border-radius: 5px;
+    }
+    .status .connected {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .status .disconnected {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    .instance {
+        grid-column: span 2;
+        text-align: center;
+        margin: 1rem 0;
+    }
+    .db-section {
+        grid-column: 1;
+    }
+    .cache-section {
+        grid-column: 2;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    input[type="text"], textarea {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    button {
+        padding: 10px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    .results {
+        margin-top: 20px;
+    }
+    footer {
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        color: #666;
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cliente B</h1>
+    </header>
+    <div class="container">
+        <!-- Conexiones -->
+        <div class="status">
+            <div class="{{ 'connected' if db_status == 'Conectado' else 'disconnected' }}">
+                <h2>Database</h2>
+                <p>Status: {{ db_status }}</p>
+            </div>
+            <div class="{{ 'connected' if cache_status == 'Conectado' else 'disconnected' }}">
+                <h2>Cache</h2>
+                <p>Status: {{ cache_status }}</p>
+            </div>
+        </div>
+    
+        <!-- Instancia -->
+        <div class="instance">
+            <h3>Instance Name</h3>
+            <p>{{ instance_name }}</p>
+        </div>
+    
+        <!-- Database Interaction -->
+        <div class="db-section">
+            <h2>Database Interaction</h2>
+            <form id="db-form">
+                <input type="text" id="db-name" placeholder="Item Name" required>
+                <input type="text" id="db-description" placeholder="Item Description" required>
+                <button type="submit">Add to Database</button>
+            </form>
+            <button id="db-view" style="margin-bottom: 20px;">View Database Records</button>
+            <form id="db-delete-form">
+                <input type="text" id="db-delete-id" placeholder="Item ID to Delete" required>
+                <button type="submit">Delete from Database</button>
+            </form>
+            <div class="results" id="db-results"></div>
+        </div>
+
+        <!-- Cache Interaction -->
+        <div class="cache-section">
+            <h2>Cache Interaction</h2>
+            <form id="cache-form">
+                <input type="text" id="cache-key" placeholder="Cache Key" required>
+                <input type="text" id="cache-value" placeholder="Cache Value" required>
+                <button type="submit">Set Cache Value</button>
+            </form>
+            <form id="cache-get-form">
+                <input type="text" id="cache-get-key" placeholder="Cache Key" required>
+                <button type="submit">Get Cache Value</button>
+            </form>
+            <form id="cache-delete-form">
+                <input type="text" id="cache-delete-key" placeholder="Cache Key to Delete" required>
+                <button type="submit">Delete Cache Key</button>
+            </form>
+            <div class="results" id="cache-results"></div>
+        </div>
+    </div>    
+    <footer>
+        <p>&copy; Servicios Multicloud</p>
+    </footer>
+
+    <script>
+         // Interacción con la base de datos
+         document.getElementById('db-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('db-name').value;
+            const description = document.getElementById('db-description').value;
+
+            const response = await fetch('/db/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, description })
+            });
+
+            const data = await response.json();
+            alert(data.message || `Item added with ID: ${data.id}`);
+        });
+
+        document.getElementById('db-view').addEventListener('click', async () => {
+            const response = await fetch('/db/items');
+            const data = await response.json();
+
+            const results = document.getElementById('db-results');
+            results.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        });
+
+        document.getElementById('db-delete-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('db-delete-id').value;
+
+            if (!id || isNaN(id)) {
+                alert("Please enter a valid numeric ID");
+                return;
+            }
+
+            const response = await fetch(`/db/delete/${id}`, {
+                method: 'DELETE'
+            });
+
+            const data = await response.json();
+            alert(data.message || data.error);
+        });
+
+
+        // Interacción con la caché
+        document.getElementById('cache-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const key = document.getElementById('cache-key').value;
+            const value = document.getElementById('cache-value').value;
+
+            const response = await fetch('/cache/set', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key, value })
+            });
+
+            const data = await response.json();
+            alert(data.message || `Cache set: ${key} = ${value}`);
+        });
+
+        document.getElementById('cache-get-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            let key = document.getElementById('cache-get-key').value.trim(); // Limpia los espacios
+
+            if (!key) {
+                alert("Key cannot be empty");
+                return;
+            }
+
+            const response = await fetch(`/cache/get/${key}`);
+            const data = await response.json();
+
+            const results = document.getElementById('cache-results');
+            if (data.error) {
+                alert(data.error);
+            } else {
+                results.innerHTML = `<p>${key}: ${data.value}</p>`;
+            }
+        });
+
+        document.getElementById('cache-delete-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const key = document.getElementById('cache-delete-key').value;
+
+            const response = await fetch(`/cache/delete/${key}`, {
+                method: 'DELETE'
+            });
+
+            const data = await response.json();
+            alert(data.message || data.error);
+        });
+    </script>
+</body>
+</html>

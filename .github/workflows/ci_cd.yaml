@@ -75,15 +75,15 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t my_app:latest .
+          docker build -t mi_app:latest .
 
       - name: Tag Docker Image
         run: |
-          docker tag my_app:latest ${{ secrets.DOCKER_USERNAME }}/my_app:latest
+          docker tag mi_app:latest ${{ secrets.DOCKER_USERNAME }}/mi_app:latest
 
       - name: Push Docker Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/my_app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/mi_app:latest
 
   deploy:
     name: Simulated Deployment
@@ -111,6 +111,7 @@ jobs:
       - name: Local Deployment Instructions
         run: |
           echo "To deploy the application locally, run the following commands:"
-          echo ""
-          echo "docker pull ${{ secrets.DOCKER_USERNAME }}/my_app:latest"
-          echo "docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/my_app:latest"
+          echo "minikube start"
+          echo "docker build -t my_app:latest ."
+          echo "docker pull ${{ secrets.DOCKER_USERNAME }}/mi_app:latest"
+          echo "docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/mi_app:latest"

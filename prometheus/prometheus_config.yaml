@@ -9,7 +9,11 @@ data:
     global:
       scrape_interval: 15s
 
+    rule_files:
+      - /etc/prometheus/alerts_rules.yml
+
     scrape_configs:
+
       - job_name: 'prometheus'
         static_configs:
           - targets: ['localhost:9090']
@@ -25,3 +29,25 @@ data:
       - job_name: 'redis-exporter'
         static_configs:
           - targets: ['redis-exporter:9121']
+
+  alerts_rules.yml: |
+    groups:
+      - name: example-alerts
+        rules:
+          - alert: AppServiceDown
+            expr: up{job="app"} == 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "El servicio de la aplicación no está disponible ({{ $labels.instance }})"
+              description: "El servicio de la aplicación en {{ $labels.instance }} no ha respondido en los últimos 60 segundos."
+
+          - alert: PostgresExporterDown
+            expr: up{job="postgres-exporter"} == 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "PostgreSQL Exporter no está enviando métricas ({{ $labels.instance }})"
+              description: "Postgres Exporter en {{ $labels.instance }} no ha enviado métricas en los últimos 2 minutos."

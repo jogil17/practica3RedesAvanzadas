@@ -13,12 +13,12 @@ function Show-Progress {
 
 # 1. Construir la imagen Docker
 Show-Progress "Paso 1: Construyendo la imagen Docker..."
-docker build -t my_app:latest .
+docker build -t mi_app:latest .
 Write-Host "✅ Imagen Docker construida con éxito." -ForegroundColor Green
 
 # 2. Cargar la imagen en Minikube
 Show-Progress "Paso 2: Cargando la imagen en Minikube..."
-minikube image load my_app:latest
+minikube image load mi_app:latest
 Write-Host "✅ Imagen cargada en Minikube." -ForegroundColor Green
 
 # 3. Aplicar el bundle de Prometheus Operator

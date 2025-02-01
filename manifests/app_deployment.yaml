@@ -12,10 +12,17 @@ spec:
       labels:
         app: app
     spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox
+          command: ['sh', '-c', 'until nc -z postgres-service 5432; do echo waiting for postgres; sleep 2; done;']
+        - name: wait-for-redis
+          image: busybox
+          command: ['sh', '-c', 'until nc -z redis-service 6379; do echo waiting for redis; sleep 2; done;']
       containers:
       - name: app
-        image: my_app:latest
-        imagePullPolicy: Never
+        image: mi_app:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
         env:
@@ -33,7 +40,15 @@ spec:
           httpGet:
             path: /health
             port: 5000
+          initialDelaySeconds: 15  # Tiempo para esperar antes de la primera comprobación
+          timeoutSeconds: 5        # Tiempo máximo para que la sonda reciba una respuesta
+          periodSeconds: 10        # Intervalo entre comprobaciones
+          failureThreshold: 5      # Intentos fallidos antes de reiniciar el contenedor
         readinessProbe:
           httpGet:
             path: /health
             port: 5000
+          initialDelaySeconds: 15  # Tiempo antes de que la primera comprobación de disponibilidad ocurra
+          timeoutSeconds: 5        # Tiempo máximo para esperar la respuesta
+          periodSeconds: 10        # Intervalo entre comprobaciones
+          failureThreshold: 5      # Intentos fallidos antes de marcarlo como no disponible

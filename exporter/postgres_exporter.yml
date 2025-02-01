@@ -36,3 +36,10 @@ spec:
       targetPort: 9187
   selector:
     app: postgres-exporter
+
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: db

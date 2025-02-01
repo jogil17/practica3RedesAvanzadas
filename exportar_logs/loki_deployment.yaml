@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: loki
+  labels:
+    app: loki
+spec:
+  containers:
+  - name: loki
+    image: grafana/loki:latest
+    args:
+      - "-config.file=/etc/loki-config.yaml"
+    volumeMounts:
+      - mountPath: /wal
+        name: wal-storage
+      - mountPath: /etc/loki-config.yaml
+        name: loki-config
+        subPath: loki-config.yaml
+    ports:
+      - containerPort: 3100
+  volumes:
+    - name: wal-storage
+      emptyDir: {}
+    - name: loki-config
+      configMap:
+        name: loki-config

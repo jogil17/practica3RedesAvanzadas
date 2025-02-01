@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: promtail-config
+  namespace: default
+data:
+  promtail.yaml: |
+    server:
+      http_listen_port: 9080
+    clients:
+      - url: http://10.97.59.232:3100/loki/api/v1/push
+    positions:
+      filename: /tmp/positions.yaml
+    scrape_configs:
+      # Logs del sistema
+      - job_name: system
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              job: varlogs
+              __path__: /var/log/*log
+
+      # Logs de la aplicación
+      - job_name: app-logs
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              job: app
+              app_name: my-app
+              __path__: /var/log/containers/app-*default_app-*.log
+
+      # Logs de la base de datos
+      - job_name: database-logs
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              job: database
+              db_name: postgres
+              __path__: /var/log/containers/postgres-*default_postgres-*.log
+
+      # Logs de la caché
+      - job_name: cache-logs
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              job: cache
+              cache_name: redis
+              __path__: /var/log/containers/redis-*default_redis-*.log
