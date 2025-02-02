@@ -5,7 +5,7 @@ import time
 # Configuración inicial
 NEW_IMAGE = "jogil17/mi_app"
 DEPLOYMENT_NAME = "app"
-NAMESPACE = "default"
+NAMESPACE = "app"
 REPLICAS = 3
 TIMEOUT = 180
 

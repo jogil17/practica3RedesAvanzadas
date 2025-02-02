@@ -8,7 +8,7 @@ import tempfile
 GREEN_IMAGE = "jogil17/mi_app"
 DEPLOYMENT_GREEN = "app-green"
 DEPLOYMENT_NAME = "app"
-NAMESPACE = "default"
+NAMESPACE = "app"
 SERVICE_NAME = "app-service"
 REPLICAS = 3
 TIMEOUT = 120
