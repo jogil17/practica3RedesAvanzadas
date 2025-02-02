@@ -27,7 +27,7 @@ class TestApp(unittest.TestCase):
         mock_get_cache.return_value = MagicMock()
 
         with app.test_client() as client:
-            response = client.get('/')
+            response = client.get('/', headers={"Accept": "application/json"})
             json_data = response.get_json()
 
             self.assertEqual(response.status_code, 200)
@@ -43,7 +43,7 @@ class TestApp(unittest.TestCase):
         mock_get_cache.return_value = MagicMock()
 
         with app.test_client() as client:
-            response = client.get('/')
+            response = client.get('/', headers={"Accept": "application/json"})
             json_data = response.get_json()
 
             self.assertEqual(response.status_code, 200)
@@ -59,7 +59,7 @@ class TestApp(unittest.TestCase):
         mock_get_cache.return_value = None
 
         with app.test_client() as client:
-            response = client.get('/')
+            response = client.get('/', headers={"Accept": "application/json"})
             json_data = response.get_json()
 
             self.assertEqual(response.status_code, 200)
