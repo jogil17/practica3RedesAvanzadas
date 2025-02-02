@@ -22,6 +22,7 @@ cache_up = metrics.gauge('cache_up', 'Status cache connection')
 
 def get_db_connection():
     db_url = os.getenv('DATABASE_URL')
+    print("DATABASE_URL:", db_url)
     try:
         conn = psycopg2.connect(db_url)
         return conn
@@ -32,6 +33,7 @@ def get_db_connection():
 
 def get_cache_connection():
     cache_url = os.getenv('CACHE_URL')
+    print("CACHE_URL:", cache_url)
     if cache_url and cache_url != 'none':
         try:
             cache = redis.StrictRedis.from_url(cache_url)
@@ -159,6 +161,10 @@ def index():
 
     # Obtener el nombre del host de la instancia
     instance_name = socket.gethostname()
+
+    # Si la petición proviene de los tests, devolver JSON
+    if request.headers.get("Accept") == "application/json":
+        return jsonify({"DB": db_status, "Cache": cache_status})
 
     return render_template("index.html", db_status=db_status, cache_status=cache_status, instance_name=instance_name)
 

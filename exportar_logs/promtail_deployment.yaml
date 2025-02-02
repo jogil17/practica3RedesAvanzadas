@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: promtail
+  namespace: monitoring
 spec:
   containers:
   - name: promtail

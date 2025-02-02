@@ -23,11 +23,15 @@ Write-Host "✅ Imagen cargada en Minikube." -ForegroundColor Green
 
 # 3. Aplicar el bundle de Prometheus Operator
 Show-Progress "Paso 3: Aplicando el Prometheus Operator..."
-kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.66/bundle.yaml
+kubectl apply -n monitoring -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.66/bundle.yaml
 Write-Host "✅ Prometheus Operator aplicado con éxito." -ForegroundColor Green
 
 # 4. Aplicar archivos de configuración personalizados
 Show-Progress "Paso 4: Aplicando configuraciones personalizadas de Prometheus..."
+
+Write-Host "Aplicando configuraciones de 'namespaces'..." -ForegroundColor Yellow
+kubectl apply -f namespaces.yaml
+Write-Host "✅ Configuraciones de 'namespaces' aplicadas." -ForegroundColor Green
 
 Write-Host "Aplicando configuraciones de 'prometheus/'..." -ForegroundColor Yellow
 kubectl apply -f prometheus/

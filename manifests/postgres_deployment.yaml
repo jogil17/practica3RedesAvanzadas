@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
+  namespace: db
 spec:
   replicas: 1
   selector:
@@ -47,6 +48,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-pvc  # Nombre del PVC
+  namespace: db
 spec:
   accessModes:
     - ReadWriteOnce  # Acceso en modo lectura y escritura

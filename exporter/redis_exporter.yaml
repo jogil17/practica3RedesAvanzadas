@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-exporter
+  namespace: exporter
   labels:
     app: redis-exporter
 spec:
@@ -22,12 +23,13 @@ spec:
               containerPort: 9121
           env:
             - name: REDIS_ADDR
-              value: "redis://redis-service:6379"  # Reemplaza <host> con el nombre de tu servicio de Redis
+              value: "redis://redis-service.cache.svc.cluster.local:6379"  # Reemplaza <host> con el nombre de tu servicio de Redis
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: redis-exporter
+  namespace: exporter
 spec:
   ports:
     - name: re
