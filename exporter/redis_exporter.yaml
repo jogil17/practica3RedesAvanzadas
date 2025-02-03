@@ -23,7 +23,7 @@ spec:
               containerPort: 9121
           env:
             - name: REDIS_ADDR
-              value: "redis://redis-service.cache.svc.cluster.local:6379"  # Reemplaza <host> con el nombre de tu servicio de Redis
+              value: "redis://redis-service.cache.svc.cluster.local:6379"
 ---
 apiVersion: v1
 kind: Service

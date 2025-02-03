@@ -6,7 +6,7 @@ metadata:
   labels:
     app: grafana
 spec:
-  replicas: 1  # Puedes cambiar el número de réplicas según tus necesidades
+  replicas: 1  
   selector:
     matchLabels:
       app: grafana
@@ -17,12 +17,12 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: grafana/grafana:latest  # Usa la última versión estable de Grafana
+          image: grafana/grafana:latest 
           ports:
-            - containerPort: 3000  # Puerto de Grafana
+            - containerPort: 3000 
           env:
             - name: GF_SECURITY_ADMIN_PASSWORD
-              value: "admin"  # Cambia esta contraseña a algo más seguro
+              value: "admin"
           volumeMounts:
             - name: grafana-storage
               mountPath: /var/lib/grafana  # Ruta dentro del contenedor donde Grafana guarda los datos
@@ -43,4 +43,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi  # Debe coincidir con el tamaño del PV
+      storage: 5Gi 

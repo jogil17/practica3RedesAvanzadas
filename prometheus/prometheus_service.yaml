@@ -13,4 +13,4 @@ spec:
     - protocol: TCP
       port: 9090
       targetPort: 9090
-      nodePort: 30090  # Puerto expuesto en el nodo
+      nodePort: 30090 

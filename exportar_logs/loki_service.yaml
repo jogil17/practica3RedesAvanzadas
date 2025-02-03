@@ -11,4 +11,4 @@ spec:
       targetPort: 3100
   selector:
     app: loki
-  type: NodePort # Cambiar a LoadBalancer si usas un entorno cloud
+  type: NodePort

@@ -18,7 +18,6 @@ spec:
     spec:
       containers:
         - name: postgres-exporter
-        #hay una issue del checkpoints_timed en los logs
           image: bitnami/postgres-exporter
           env:
             - name: DATA_SOURCE_NAME
